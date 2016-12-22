@@ -1,26 +1,73 @@
-FROM debian:jessie
-MAINTAINER fukata <tatsuya.fukata@gmail.com>
+FROM alpine:edge
+MAINTAINER Tatsuya Fukata <tatsuya.fukata@gmail.com>
 
-ENV H2O_VERSION  tags/v2.1.0-beta4
+ENV URL https://github.com/h2o/h2o.git
+ENV H2O_VERSION v2.1.0-beta4 
 
-RUN set -x \
-    && echo "deb http://httpredir.debian.org/debian jessie-backports main" >> /etc/apt/sources.list \
-    && apt-get clean \
-    && apt-get update \
-    && apt-get upgrade -y \
-    && apt-get dist-upgrade -y \
-    && apt-get autoremove --purge -y \
-    && apt-get autoclean -y \
-    && apt-get install locate git cmake build-essential checkinstall autoconf pkg-config libtool python-sphinx wget libcunit1-dev nettle-dev libyaml-dev libssl-dev ruby ruby-dev bison -y --fix-missing \
-    && apt-get -t jessie-backports install libuv1-dev -y --fix-missing \
-    && git clone https://github.com/tatsuhiro-t/wslay.git \
-    && git clone https://github.com/h2o/h2o.git \
-    && cd /wslay && autoreconf -i && automake && autoconf && ./configure && make && make install \
-    && cd /h2o && git checkout $H2O_VERSION && cmake -DWITH_BUNDLED_SSL=on -DWITH_MRUBY=on . && make && make install
-
-VOLUME /var/log /etc/letsencrypt /var/www /etc/h2o
-
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+    && apk update \
+    && apk upgrade \
+    # need for ocsp stapling \
+    && apk add -U perl openssl openssl-dev \
+    # just needed since v2
+    && apk add -U libstdc++ \
+    # save state before installed packages for building \
+    && grep ^P /lib/apk/db/installed | sed -e 's#^P:##g' | sort > /before \
+    && apk add -U build-base \
+                  ca-certificates \
+                  cmake \
+                  git \
+                  linux-headers \
+                  zlib-dev \
+                  ruby \
+                  ruby-dev \
+                  bison \
+                  wslay-dev \
+                  wslay \
+                  libuv-dev \
+    && git clone $URL h2o \
+    # build h2o \
+    && cd h2o \
+    && git checkout $H2O_VERSION \
+    && cmake -DWITH_BUNDLED_SSL=on -DWITH_MRUBY=on . \
+    && make install \
+    && cd .. \
+    && rm -rf h2o \
+    # remove packages installed just for building \
+    && grep ^P /lib/apk/db/installed | sed -e 's#^P:##g' | sort > /after \
+    && diff /before /after | grep -e "^+[^+]" | sed -e 's#+##g' | xargs -n1 apk del \
+    && rm /before /after \
+    && rm -rf /var/cache/apk/* \
+		&& mkdir /etc/h2o \
+    # just test it \
+    && h2o -v \
+    # install php \
+    && apk add -U php7 \
+                  php7-memcached \
+                  php7-redis \
+                  php7-mysqlnd \
+                  php7-dom \
+                  php7-ctype \
+                  php7-curl \
+                  php7-cgi \
+                  php7-gd \
+                  php7-intl \
+                  php7-json \
+                  php7-mbstring \
+                  php7-mcrypt \
+                  php7-mysqli \
+                  php7-opcache \
+                  php7-pdo \
+                  php7-pdo_mysql \
+                  php7-posix \
+                  php7-session \
+                  php7-xml \
+                  php7-iconv \
+                  php7-phar \
+                  php7-openssl \
+                  php7-zip \
+                  php7-zlib 
 WORKDIR /etc/h2o
 
 EXPOSE 80 443
-CMD h2o -m master -c h2o.conf
+CMD ["h2o", "-m", "master", "-c", "h2o.conf"]
