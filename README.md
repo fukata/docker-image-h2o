@@ -8,8 +8,8 @@ docker image of h2o(ssl,mruby) with php7.
 # Example
 
 ```bash
-$ docker pull fukata/h2o-php:v2.1.0-beta4
-$ docker run -p 18080:80 fukata/h2o-php:v2.1.0-beta4
+$ docker pull fukata/h2o-php
+$ docker run -p 18080:80 fukata/h2o-php
 start_server (pid:1) starting now...
 starting new worker 7
 [INFO] raised RLIMIT_NOFILE to 1048576
