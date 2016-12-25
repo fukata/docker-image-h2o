@@ -5,6 +5,8 @@ ENV URL https://github.com/h2o/h2o.git
 ENV H2O_VERSION v2.1.0-beta4 
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+    && addgroup -g 1000 -S www-data \
+    && adduser -u 1000 -D -S -G www-data www-data \
     && apk update \
     && apk upgrade \
     # need for ocsp stapling \
