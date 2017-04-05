@@ -44,7 +44,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
     # just test it \
     && h2o -v \
     # install php \
-    && apk add -U php7 \
+    && apk add -U libzip libwebp \
+                  php7 \
                   php7-memcached \
                   php7-redis \
                   php7-mysqlnd \
