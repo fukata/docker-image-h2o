@@ -1,11 +1,11 @@
 docker-image-h2o-php
 ----
 
-# What's this
+## What's this
 
 docker image of h2o(ssl,mruby) with php7 on alpine:3.5.
 
-# Example
+## Example
 
 ```bash
 $ docker pull fukata/h2o-php
@@ -39,4 +39,10 @@ Hello h2o(mruby) on docker
 
 $ curl http://127.0.0.1:18080/phpinfo.php
 ...phpinfo...
+```
+
+## Build on local
+
+```
+$ docker build .
 ```
