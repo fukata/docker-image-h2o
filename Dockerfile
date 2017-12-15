@@ -2,7 +2,7 @@ FROM alpine:3.7
 MAINTAINER Tatsuya Fukata <tatsuya.fukata@gmail.com>
 
 ENV URL https://github.com/h2o/h2o.git
-ENV H2O_VERSION v2.2.3
+ENV H2O_VERSION v2.2.4
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
     && addgroup -g 1000 -S www-data \
