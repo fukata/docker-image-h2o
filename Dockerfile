@@ -69,7 +69,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
                   php7-phar \
                   php7-openssl \
                   php7-zip \
-                  php7-zlib
+                  php7-zlib \
+                  composer
 
 ADD examples/h2o/h2o.conf /etc/h2o/
 ADD examples/www /var/www/
