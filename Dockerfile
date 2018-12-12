@@ -38,6 +38,7 @@ RUN set -x \
     && rm -rf h2o \
     # remove packages installed just for building \
     && grep ^P /lib/apk/db/installed | sed -e 's#^P:##g' | sort > /after \
+    # egrep -v '^g$' is hack. return code 123
     && diff /before /after | grep -e "^+[^+]" | sed -e 's#+##g' | egrep -v '^g$' | xargs -n1 apk del \
     && rm /before /after \
     && rm -rf /var/cache/apk/* \
