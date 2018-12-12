@@ -4,7 +4,8 @@ MAINTAINER Tatsuya Fukata <tatsuya.fukata@gmail.com>
 ENV URL https://github.com/h2o/h2o.git
 ENV H2O_VERSION v2.2.5
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+RUN set -x \
+    && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
     && addgroup -g 1000 -S www-data \
     && adduser -u 1000 -D -S -G www-data www-data \
     && apk update \
@@ -37,7 +38,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
     && rm -rf h2o \
     # remove packages installed just for building \
     && grep ^P /lib/apk/db/installed | sed -e 's#^P:##g' | sort > /after \
-    && diff /before /after | grep -e "^+[^+]" | sed -e 's#+##g' | xargs -n1 apk del \
+    && diff /before /after | grep -e "^+[^+]" | sed -e 's#+##g' | egrep -v '^g$' | xargs -n1 apk del \
     && rm /before /after \
     && rm -rf /var/cache/apk/* \
 		&& mkdir /etc/h2o \
