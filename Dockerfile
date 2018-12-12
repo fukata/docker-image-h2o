@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.8
 MAINTAINER Tatsuya Fukata <tatsuya.fukata@gmail.com>
 
 ENV URL https://github.com/h2o/h2o.git

@@ -3,7 +3,7 @@ docker-image-h2o-php
 
 ## What's this
 
-docker image of h2o(ssl,mruby) with php7 on alpine:3.5.
+docker image of h2o(ssl,mruby) with php7 on alpine:3.8.
 
 ## Example
 
