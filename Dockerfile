@@ -75,6 +75,7 @@ RUN set -x \
                   php7-fileinfo \
                   php7-tokenizer \
                   php7-xmlwriter \
+                  git \
                   composer
 
 ADD examples/h2o/h2o.conf /etc/h2o/
