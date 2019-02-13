@@ -72,6 +72,9 @@ RUN set -x \
                   php7-phar \
                   php7-openssl \
                   php7-zip \
+                  php7-fileinfo \
+                  php7-tokenizer \
+                  php7-xmlwriter \
                   composer
 
 ADD examples/h2o/h2o.conf /etc/h2o/
