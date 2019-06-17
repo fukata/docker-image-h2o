@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.9.4
 MAINTAINER Tatsuya Fukata <tatsuya.fukata@gmail.com>
 
 ENV URL https://github.com/h2o/h2o.git
@@ -76,7 +76,8 @@ RUN set -x \
                   php7-tokenizer \
                   php7-xmlwriter \
                   git \
-                  composer
+                  composer \
+    && php -v
 
 ADD examples/h2o/h2o.conf /etc/h2o/
 ADD examples/www /var/www/
