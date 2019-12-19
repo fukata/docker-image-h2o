@@ -1,8 +1,8 @@
-FROM alpine:3.9.4
+FROM alpine:3.10.3
 MAINTAINER Tatsuya Fukata <tatsuya.fukata@gmail.com>
 
 ENV URL https://github.com/h2o/h2o.git
-ENV H2O_VERSION v2.2.5
+ENV H2O_VERSION v2.2.6
 
 RUN set -x \
     && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
